@@ -5,7 +5,8 @@ import type {
   DeckPayload,
   SignInPayload,
   SignUpPayload,
-} from '../types/index.js'
+} from '@/types'
+
 import { useStorage } from './useStorage.js'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
