@@ -35,20 +35,17 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
-import { ROUTES } from '@/router.ts'
 import { useAuthStore } from '@/store/auth.store.ts'
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string
 
-const router = useRouter()
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 const { signOut } = authStore
 
-const handleSignOut = () => {
-  signOut()
-  router.push(ROUTES.SIGN_IN)
+const handleSignOut = async () => {
+  await signOut()
 }
 </script>

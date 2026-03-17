@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 
 import { useApi } from '@/composables/useApi.ts'
 import { useStorage } from '@/composables/useStorage.ts'
+import router, { ROUTES } from '@/router.ts'
 import type { SignInPayload, SignUpPayload, User } from '@/types'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -44,11 +45,12 @@ export const useAuthStore = defineStore('auth', () => {
     set('user', response.user)
   }
 
-  const signOut = () => {
+  const signOut = async () => {
     token.value = ''
     user.value = null
     remove('token')
     remove('user')
+    await router.push(ROUTES.SIGN_IN)
   }
 
   return { token, user, isAuthenticated, signUp, signIn, signOut }
