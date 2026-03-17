@@ -65,11 +65,26 @@ const rules: FormRules = {
   email: [
     {
       required: true,
+      message: 'Un email est requis',
+      trigger: 'blur',
+    },
+    {
+      // utilisation d'un regex pour valider le format de l'email
+      // ^ = début de la chaîne
+      // [^\s@]+ = un ou plusieurs caractères qui ne sont pas des espaces ou des @
+      // @ = le symbole @
+      // \. = un point (doit être échappé car le point est un caractère spécial en regex)
+      // $ = fin de la chaîne
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: 'Veuillez entrer un email valide',
+      trigger: 'blur',
     },
   ],
   password: [
     {
       required: true,
+      message: 'Un mot de passe est requis',
+      trigger: 'blur',
     },
   ],
 }
