@@ -26,13 +26,26 @@
         </NButton>
       </NSpace>
       <NSpace align="center" :size="16">
-        <NText depth="3">Renseigner le user connecté ici</NText>
-        <NButton size="small">Déconnexion</NButton>
+        <NText depth="3">{{ user?.username ?? '' }}</NText>
+        <NButton size="small" @click="handleSignOut">Déconnexion</NButton>
       </NSpace>
     </NSpace>
   </NLayoutHeader>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { RouterLink } from 'vue-router'
+
+import { useAuthStore } from '@/store/auth.store.ts'
+
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string
+
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+const { signOut } = authStore
+
+const handleSignOut = async () => {
+  await signOut()
+}
 </script>
