@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import CreateDeckPage from '@/pages/CreateDeckPage.vue'
+import CreateDeckPage from '@/pages/decks/CreateDeckPage.vue'
+import DetailDeckPage from '@/pages/decks/DetailDeckPage.vue'
+import UpdateDeckPage from '@/pages/decks/UpdateDeckPage.vue'
 import { useAuthStore } from '@/store/auth.store.ts'
 
+import SignInPage from './pages/auth/SignInPage.vue'
+import SignUpPage from './pages/auth/SignUpPage.vue'
 import HomePage from './pages/HomePage.vue'
-import SignInPage from './pages/SignInPage.vue'
-import SignUpPage from './pages/SignUpPage.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -18,6 +20,8 @@ export const ROUTES = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   CREATE_DECK: '/create-deck',
+  UPDATE_DECK: '/update-deck/:deckId',
+  DETAILS_DECK: '/details-deck/:deckId',
 } as const
 
 const routes = [
@@ -37,6 +41,16 @@ const routes = [
   {
     path: ROUTES.CREATE_DECK,
     component: CreateDeckPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.UPDATE_DECK,
+    component: UpdateDeckPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.DETAILS_DECK,
+    component: DetailDeckPage,
     meta: { requiresAuth: true },
   },
 ]

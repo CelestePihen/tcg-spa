@@ -27,7 +27,7 @@
 
     <NProgress
       v-if="showHp"
-      color="green"
+      :color="useColors().hpColor(currentHpPercentage)"
       style="margin-top: 10px; margin-bottom: 10px"
       type="line"
       :show-indicator="false"

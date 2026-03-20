@@ -1,5 +1,5 @@
 <template>
-  <NGrid :x-gap="2" :y-gap="10" :cols="6">
+  <NGrid :x-gap="2" :y-gap="10" :cols="nbColumn">
     <NGi v-for="card in cards" :key="card.id">
       <CardComponent
         class="card"
@@ -13,35 +13,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import CardComponent from '@/components/CardComponent.vue'
 import type { Card } from '@/types'
 
 interface ListCardProps {
   cards: Card[]
+  selectedCardIds?: Set<number>
+  canBeSelected?: boolean
+  nbColumn?: number
 }
 
-defineProps<ListCardProps>()
-
-const selectedCardIds = ref<Set<number>>(new Set())
+const props = withDefaults(defineProps<ListCardProps>(), {
+  selectedCardIds: () => new Set<number>(),
+  canBeSelected: true,
+  nbColumn: 6,
+})
 
 const emit =
   defineEmits<(e: 'update-selected-cards', ids: Set<number>) => void>()
 
 const onSelectCard = (card: Card, selected: boolean) => {
+  if (!props.canBeSelected) return
+
   if (!selected) {
-    selectedCardIds.value.add(card.id)
-  } else {
-    selectedCardIds.value.delete(card.id)
+    props.selectedCardIds.add(card.id)
+  } else if (selected) {
+    props.selectedCardIds.delete(card.id)
   }
 
-  emit('update-selected-cards', new Set(selectedCardIds.value))
+  emit('update-selected-cards', new Set(props.selectedCardIds))
 }
 
-const isCardSelected = (cardId: number) => selectedCardIds.value.has(cardId)
+const isCardSelected = (cardId: number) =>
+  props.selectedCardIds.has(cardId) && props.canBeSelected
 const isCardDisabled = (cardId: number) =>
-  !selectedCardIds.value.has(cardId) && selectedCardIds.value.size === 10
+  !props.selectedCardIds.has(cardId) && props.selectedCardIds.size === 10
 </script>
 
 <style scoped></style>

@@ -14,7 +14,9 @@
       <NInput v-model:value="form.deckName" placeholder="Mon super deck" />
     </NFormItem>
 
-    <p>{{ selectedCardIds.size }}/10 cartes sélectionnées</p>
+    <p :class="{ validate: selectedCardIds.size === 10 }">
+      {{ selectedCardIds.size }}/10 cartes sélectionnées
+    </p>
 
     <NFlex vertical style="margin-bottom: 20px">
       <NButton
@@ -28,6 +30,7 @@
 
   <ListCardComponent
     :cards="cards"
+    :selected-card-ids="selectedCardIds"
     @update-selected-cards="handleSelectedCardsChange"
   />
 </template>
@@ -43,12 +46,8 @@ import { onMounted, ref } from 'vue'
 
 import ListCardComponent from '@/components/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
-import { ROUTES } from '@/router.ts'
+import router, { ROUTES } from '@/router.ts'
 import type { Card } from '@/types'
-
-interface ModelType {
-  deckName: string
-}
 
 const message = useMessage()
 const api = useApi()
@@ -58,7 +57,7 @@ const selectedCardIds = ref<Set<number>>(new Set())
 const isLoading = ref<boolean>(false)
 
 const formRef = ref<FormInst | null>(null)
-const form = ref<ModelType>({
+const form = ref({
   deckName: '',
 })
 
@@ -98,6 +97,7 @@ const handleCreateDeck = (_event: MouseEvent) => {
           cards: [...selectedCardIds.value],
         })
         message.info('Deck créée')
+        await router.push(ROUTES.HOME)
       } catch (e) {
         if (e instanceof Error) message.error(e.message)
       } finally {
@@ -110,4 +110,8 @@ const handleCreateDeck = (_event: MouseEvent) => {
 onMounted(fetchCards)
 </script>
 
-<style scoped></style>
+<style scoped>
+.validate {
+  color: green;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <NEmpty description="Page d'accueil à implémenter (tickets 2 et 3)" />
+    <NEmpty description="Page d'accueil à implémenter (ticket 3)" />
 
     <NFlex justify="space-between">
       <h1>Mes decks</h1>
@@ -8,12 +8,15 @@
         <NButton type="primary" @click="handleNewDeck">+ Nouveau deck</NButton>
       </NFlex>
     </NFlex>
+
+    <ListDeckComponent />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+import ListDeckComponent from '@/components/ListDeckComponent.vue'
 import { ROUTES } from '@/router.ts'
 
 const router = useRouter()
