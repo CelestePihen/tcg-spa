@@ -1,5 +1,5 @@
 <template>
-  <NGrid :x-gap="20" :y-gap="10" :cols="6">
+  <NGrid :x-gap="2" :y-gap="10" :cols="6">
     <NGi v-for="card in cards" :key="card.id">
       <CardComponent
         class="card"

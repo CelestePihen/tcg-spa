@@ -19,7 +19,7 @@
     <NFlex vertical style="margin-bottom: 20px">
       <NButton
         attr-type="submit"
-        :disabled="selectedCardIds.size === 0 || !form.deckName || isLoading"
+        :disabled="selectedCardIds.size !== 10 || !form.deckName || isLoading"
         type="primary"
         >Créer le deck</NButton
       >
@@ -90,8 +90,4 @@ const handleCreateDeck = (_event: MouseEvent) => {
 }
 </script>
 
-<style scoped>
-.card {
-  height: 100%;
-}
-</style>
+<style scoped></style>
