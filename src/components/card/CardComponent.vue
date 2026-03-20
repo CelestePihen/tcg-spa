@@ -26,22 +26,22 @@
     </p>
 
     <NProgress
-      v-if="showHp"
-      :color="useColors().hpColor(currentHpPercentage)"
+      v-if="hasCurrentHp"
+      :color="useColors().hpColor(hpPercentage)"
       style="margin-top: 10px; margin-bottom: 10px"
       type="line"
       :show-indicator="false"
-      :percentage="currentHpPercentage"
+      :percentage="hpPercentage"
     >
     </NProgress>
 
-    <p v-if="!showHp">❤️{{ card.hp }} · ⚔️{{ card.attack }}</p>
+    <p v-if="!hasCurrentHp">❤️{{ card.hp }} · ⚔️{{ card.attack }}</p>
     <p v-else>❤️{{ currentHp }} / {{ card.hp }} · ⚔️{{ card.attack }}</p>
   </NCard>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 import { useColors } from '@/composables/useColors.ts'
 import type { Card } from '@/types'
@@ -51,21 +51,19 @@ interface CardProps {
   size?: 'sm' | 'md'
   selected?: boolean
   disabled?: boolean
-  showHp?: boolean
+  currentHp?: number
 }
 
 const props = withDefaults(defineProps<CardProps>(), {
   size: 'md',
   selected: false,
   disabled: false,
-  showHp: false,
+  currentHp: undefined,
 })
 
-const currentHp = ref<number>(props.card.hp)
-const currentHpPercentage = computed(() => {
-  const pct = (currentHp.value / props.card.hp) * 100
-  return Math.max(0, Math.min(100, pct))
-})
+const hasCurrentHp = computed(() => props.currentHp !== undefined)
+const hpValue = computed(() => props.currentHp ?? props.card.hp)
+const hpPercentage = computed(() => (hpValue.value / props.card.hp) * 100)
 
 const emit = defineEmits<{ 'select-card': [Card, boolean] }>()
 </script>

@@ -3,7 +3,7 @@
     <h2>{{ deck.name }}</h2>
     <ListCardComponent
       :cards="cards"
-      :can-be-selected="false"
+      :selection-mode="false"
       :nb-column="5"
     ></ListCardComponent>
 
@@ -41,7 +41,7 @@
 import { useMessage } from 'naive-ui'
 import { computed, ref } from 'vue'
 
-import ListCardComponent from '@/components/ListCardComponent.vue'
+import ListCardComponent from '@/components/card/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
 import type { Card, Deck } from '@/types'
 
@@ -86,6 +86,8 @@ const handleDeleteDeck = async () => {
     } else {
       message.error('Erreur inconnue')
     }
+  } finally {
+    isLoading.value = false
   }
 }
 </script>

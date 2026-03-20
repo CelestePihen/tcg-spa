@@ -45,7 +45,7 @@ import {
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import ListCardComponent from '@/components/ListCardComponent.vue'
+import ListCardComponent from '@/components/card/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
 import { ROUTES } from '@/router.ts'
 import type { Card, Deck } from '@/types'
@@ -97,8 +97,21 @@ const fetchCards = async () => {
 const fetchDeck = async () => {
   const deckId = route.params.deckId
 
+  // vérifier s'il y a bien un Id et VueRouter qui envoie un tableau (pourquoi ?)
+  if (!deckId || Array.isArray(deckId)) {
+    await router.push(ROUTES.HOME)
+    return
+  }
+
   try {
-    myDeck.value = await api.getDeck(Number(deckId))
+    // vérifier si c'est un ID valide
+    const newDeckId = Number(deckId)
+    if (Number.isNaN(newDeckId)) {
+      await router.push(ROUTES.HOME)
+      return
+    }
+
+    myDeck.value = await api.getDeck(newDeckId)
     form.value.deckName = myDeck.value.name
 
     for (const deckCard of myDeck.value.cards) {

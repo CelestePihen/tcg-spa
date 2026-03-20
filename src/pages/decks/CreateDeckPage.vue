@@ -44,7 +44,7 @@ import {
 } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 
-import ListCardComponent from '@/components/ListCardComponent.vue'
+import ListCardComponent from '@/components/card/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
 import router, { ROUTES } from '@/router.ts'
 import type { Card } from '@/types'
