@@ -1,6 +1,6 @@
 <template>
   <NFlex align="center">
-    <NButton>← Retour</NButton>
+    <RouterLink :to="ROUTES.HOME"><NButton>← Retour</NButton></RouterLink>
     <h1>Créer un deck</h1>
   </NFlex>
 
@@ -26,7 +26,10 @@
     </NFlex>
   </NForm>
 
-  <ListCardComponent @update-selected-cards="handleSelectedCardsChange" />
+  <ListCardComponent
+    :cards="cards"
+    @update-selected-cards="handleSelectedCardsChange"
+  />
 </template>
 
 <script setup lang="ts">
@@ -36,10 +39,12 @@ import {
   type FormValidationError,
   useMessage,
 } from 'naive-ui'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import ListCardComponent from '@/components/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
+import { ROUTES } from '@/router.ts'
+import type { Card } from '@/types'
 
 interface ModelType {
   deckName: string
@@ -48,6 +53,7 @@ interface ModelType {
 const message = useMessage()
 const api = useApi()
 
+const cards = ref<Card[]>([])
 const selectedCardIds = ref<Set<number>>(new Set())
 const isLoading = ref<boolean>(false)
 
@@ -64,6 +70,18 @@ const rules: FormRules = {
       trigger: 'blur',
     },
   ],
+}
+
+const fetchCards = async () => {
+  try {
+    cards.value = await api.getCards()
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Erreur inconnue')
+    }
+  }
 }
 
 const handleSelectedCardsChange = (ids: Set<number>) => {
@@ -88,6 +106,8 @@ const handleCreateDeck = (_event: MouseEvent) => {
     }
   })
 }
+
+onMounted(fetchCards)
 </script>
 
 <style scoped></style>
