@@ -36,7 +36,7 @@
     </NProgress>
 
     <p v-if="!hasCurrentHp">❤️{{ card.hp }} · ⚔️{{ card.attack }}</p>
-    <p v-else>❤️{{ currentHp }} / {{ card.hp }} · ⚔️{{ card.attack }}</p>
+    <p v-else>❤️{{ props.currentHp }} / {{ card.hp }} · ⚔️{{ card.attack }}</p>
   </NCard>
 </template>
 

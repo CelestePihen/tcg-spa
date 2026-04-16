@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/auth.store.ts'
 
 import SignInPage from './pages/auth/SignInPage.vue'
 import SignUpPage from './pages/auth/SignUpPage.vue'
+import GamePage from './pages/game/GamePage.vue'
 import HomePage from './pages/HomePage.vue'
 
 declare module 'vue-router' {
@@ -17,6 +18,7 @@ declare module 'vue-router' {
 
 export const ROUTES = {
   HOME: '/',
+  GAME: '/game',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   CREATE_DECK: '/create-deck',
@@ -36,6 +38,11 @@ const routes = [
   {
     path: ROUTES.HOME,
     component: HomePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.GAME,
+    component: GamePage,
     meta: { requiresAuth: true },
   },
   {
