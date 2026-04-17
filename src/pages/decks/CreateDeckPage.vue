@@ -28,6 +28,7 @@
     </NFlex>
   </NForm>
 
+  <!-- clearable sert à afficher une petite croix permettant d'effacer le contenu -->
   <NInput
     v-model:value="searchQuery"
     clearable
@@ -65,9 +66,12 @@ const isLoading = ref<boolean>(false)
 const searchQuery = ref('')
 
 const filteredCards = computed(() => {
+  // trim = on enlève les espaces avant et après la recherche
+  // toLowerCase = pour ne pas être sensible à la casse
   const query = searchQuery.value.trim().toLowerCase()
   if (!query) return cards.value
 
+  // on filtre les cartes dont le nom contient la recherche
   return cards.value.filter((card) => card.name.toLowerCase().includes(query))
 })
 
