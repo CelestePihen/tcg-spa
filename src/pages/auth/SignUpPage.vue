@@ -1,14 +1,21 @@
 <template>
-  <NFlex class="sign-in" align="center" justify="center" vertical>
-    <NCard title="Connexion">
-      <NForm
-        ref="formRef"
-        :model="user"
-        :rules="rules"
-        @submit.prevent="handleSignIn"
-      >
+  <NFlex class="sign-up" align="center" justify="center" vertical>
+    <NCard title="Inscription">
+      <NForm ref="formRef" :model="user" :rules="rules">
+        <NFormItem label="Nom d'utilisateur" path="username">
+          <NInput
+            v-model:value="user.username"
+            placeholder="Dresseur42"
+            @keydown.enter.prevent
+          />
+        </NFormItem>
+
         <NFormItem label="Email" path="email">
-          <NInput v-model:value="user.email" placeholder="votre@email.com" />
+          <NInput
+            v-model:value="user.email"
+            placeholder="votre@email.com"
+            @keydown.enter.prevent
+          />
         </NFormItem>
 
         <NFormItem label="Mot de passe" path="password">
@@ -21,16 +28,16 @@
         </NFormItem>
 
         <NButton
-          attr-type="submit"
-          :disabled="!user.email || !user.password || isLoading"
+          :disabled="!user.username || !user.email || !user.password"
           block
           type="primary"
-          >Se connecter</NButton
+          @click="handleSignUp"
+          >S'inscrire</NButton
         >
 
         <NFlex align="center" justify="center">
-          <p>Pas encore de compte ?</p>
-          <RouterLink to="/sign-up">S'inscrire</RouterLink>
+          <p>Déjà un compte ?</p>
+          <RouterLink to="/sign-in">Se connecter</RouterLink>
         </NFlex>
       </NForm>
     </NCard>
@@ -47,6 +54,7 @@ import { ROUTES } from '@/router.ts'
 import { useAuthStore } from '@/store/auth.store.ts'
 
 interface ModelType {
+  username: string
   email: string
   password: string
 }
@@ -56,12 +64,20 @@ const router = useRouter()
 
 const formRef = ref<FormInst | null>(null)
 const user = ref<ModelType>({
+  username: '',
   email: '',
   password: '',
 })
 const isLoading = ref<boolean>(false)
 
 const rules: FormRules = {
+  username: [
+    {
+      required: true,
+      message: "Un nom d'utilisateur est requis",
+      trigger: 'blur',
+    },
+  ],
   email: [
     {
       required: true,
@@ -89,18 +105,18 @@ const rules: FormRules = {
   ],
 }
 
-function handleSignIn(e: MouseEvent) {
+function handleSignUp(e: MouseEvent) {
   e.preventDefault()
   formRef.value?.validate(async (errors: FormValidationError[] | undefined) => {
     if (!errors) {
       try {
         isLoading.value = true
-        await useAuthStore().signIn(user.value)
+        await useAuthStore().signUp(user.value)
         await router.push(ROUTES.HOME)
-        message.info('Vous êtes connecté(e)')
-      } catch (error) {
+        message.info('Vous êtes enregistré(e)')
+      } catch (e) {
         isLoading.value = false
-        if (error instanceof Error) message.error(error.message)
+        if (e instanceof Error) message.error(e.message)
       }
     }
   })
@@ -108,7 +124,7 @@ function handleSignIn(e: MouseEvent) {
 </script>
 
 <style scoped>
-.sign-in {
+.sign-up {
   min-height: 100vh;
 }
 

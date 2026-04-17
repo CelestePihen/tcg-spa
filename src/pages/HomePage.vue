@@ -1,5 +1,11 @@
 <template>
   <div class="container">
-    <NEmpty description="Page d'accueil à implémenter (tickets 2 et 3)" />
+    <LobbyComponent />
+    <ListDeckComponent />
   </div>
 </template>
+
+<script setup lang="ts">
+import ListDeckComponent from '@/components/deck/ListDeckComponent.vue'
+import LobbyComponent from '@/components/lobby/LobbyComponent.vue'
+</script>
