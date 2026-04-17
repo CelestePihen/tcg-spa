@@ -28,8 +28,15 @@
     </NFlex>
   </NForm>
 
+  <NInput
+    v-model:value="searchQuery"
+    clearable
+    placeholder="Rechercher une carte par nom"
+    style="margin-bottom: 12px"
+  />
+
   <ListCardComponent
-    :cards="cards"
+    :cards="filteredCards"
     :selected-card-ids="selectedCardIds"
     @update-selected-cards="handleSelectedCardsChange"
   />
@@ -42,7 +49,7 @@ import {
   type FormValidationError,
   useMessage,
 } from 'naive-ui'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import ListCardComponent from '@/components/card/ListCardComponent.vue'
 import { useApi } from '@/composables/useApi.ts'
@@ -55,6 +62,14 @@ const api = useApi()
 const cards = ref<Card[]>([])
 const selectedCardIds = ref<Set<number>>(new Set())
 const isLoading = ref<boolean>(false)
+const searchQuery = ref('')
+
+const filteredCards = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+  if (!query) return cards.value
+
+  return cards.value.filter((card) => card.name.toLowerCase().includes(query))
+})
 
 const formRef = ref<FormInst | null>(null)
 const form = ref({
