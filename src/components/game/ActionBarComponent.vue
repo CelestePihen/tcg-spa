@@ -49,7 +49,6 @@ const emit = defineEmits<(e: 'draw' | 'attack' | 'end-turn') => void>()
 </script>
 
 <style scoped>
-/* fuck le CSS */
 .action-bar {
   align-items: center;
   border-bottom: 1px solid #ececec;

@@ -78,23 +78,25 @@
 
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import { useApi } from '@/composables/useApi.ts'
-import { ROUTES } from '@/router.ts'
 import { useAuthStore } from '@/store/auth.store.ts'
-import type { Deck, LobbyRoom } from '@/types'
+import { useSocketStore } from '@/store/socket.store.ts'
+import type { Deck } from '@/types'
 
 const api = useApi()
 const message = useMessage()
-const router = useRouter()
 const authStore = useAuthStore()
+const socketStore = useSocketStore()
+
+const { token } = storeToRefs(authStore)
+const { error, isConnected, rooms } = storeToRefs(socketStore)
 
 const decks = ref<Deck[]>([])
 const selectedDeckId = ref<number | null>(null)
 const isLoading = ref<boolean>(false)
-const rooms = ref<LobbyRoom[]>([])
 
 const deckOptions = computed(() =>
   decks.value.map((deck) => ({
@@ -136,31 +138,30 @@ const handleCreateRoom = (): void => {
     return
   }
 
-  rooms.value.unshift({
-    id: crypto.randomUUID(),
-    name: `Partie #${rooms.value.length + 1}`,
-    hostUsername: authStore.user?.username ?? 'Vous',
-    playersCount: 1,
-    maxPlayers: 2,
-    status: 'waiting',
-  })
-
-  message.success('Partie créée.')
+  socketStore.createRoom(selectedDeckId.value)
 }
 
-const handleJoinRoom = async (roomId: string): Promise<void> => {
+const handleJoinRoom = (roomId: string): void => {
   if (!selectedDeckId.value) {
     message.warning('Sélectionnez un deck avant de rejoindre une room.')
     return
   }
 
-  rooms.value = rooms.value.filter((room) => room.id !== roomId)
-  message.success('Partie rejointe.')
-  await router.push(ROUTES.GAME)
+  socketStore.joinRoom(roomId, selectedDeckId.value)
 }
 
+watch(error, (value) => {
+  if (!value) return
+  message.error(value)
+})
+
 onMounted(async () => {
+  if (token.value && !isConnected.value) {
+    socketStore.connect(token.value)
+  }
+
   await fetchDecks()
+  socketStore.requestRooms()
 })
 </script>
 
