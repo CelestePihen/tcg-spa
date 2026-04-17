@@ -28,8 +28,16 @@
     </NFlex>
   </NForm>
 
+  <!-- clearable sert à afficher une petite croix permettant d'effacer le contenu -->
+  <NInput
+    v-model:value="searchQuery"
+    clearable
+    placeholder="Rechercher une carte par nom"
+    style="margin-bottom: 12px"
+  />
+
   <ListCardComponent
-    :cards="cards"
+    :cards="filteredCards"
     :selected-card-ids="selectedCardIds"
     @update-selected-cards="handleSelectedCardsChange"
   />
@@ -42,7 +50,7 @@ import {
   type FormValidationError,
   useMessage,
 } from 'naive-ui'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import ListCardComponent from '@/components/card/ListCardComponent.vue'
@@ -65,6 +73,17 @@ const myDeck = ref<Deck>({
 const cards = ref<Card[]>([])
 const selectedCardIds = ref<Set<number>>(new Set())
 const isLoading = ref<boolean>(false)
+const searchQuery = ref('')
+
+const filteredCards = computed(() => {
+  // trim = on enlève les espaces avant et après la recherche
+  // toLowerCase = pour ne pas être sensible à la casse
+  const query = searchQuery.value.trim().toLowerCase()
+  if (!query) return cards.value
+
+  // on filtre les cartes dont le nom contient la recherche
+  return cards.value.filter((card) => card.name.toLowerCase().includes(query))
+})
 
 const formRef = ref<FormInst | null>(null)
 const form = ref({
