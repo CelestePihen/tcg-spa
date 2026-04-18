@@ -49,15 +49,16 @@ const emit = defineEmits<(e: 'draw' | 'attack' | 'end-turn') => void>()
 </script>
 
 <style scoped>
+/* fuck le CSS */
 .action-bar {
   align-items: center;
   border-bottom: 1px solid #ececec;
   border-top: 1px solid #ececec;
   display: grid;
   gap: 10px;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr;
   min-height: 54px;
-  padding: 0 10px;
+  padding: 10px;
 }
 
 .action-message {
@@ -70,5 +71,21 @@ const emit = defineEmits<(e: 'draw' | 'attack' | 'end-turn') => void>()
 .action-buttons {
   display: flex;
   gap: 6px;
+  justify-content: stretch;
+}
+
+.action-buttons :deep(.n-button) {
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .action-bar {
+    grid-template-columns: auto 1fr auto;
+    padding: 0 10px;
+  }
+
+  .action-buttons :deep(.n-button) {
+    flex: unset;
+  }
 }
 </style>

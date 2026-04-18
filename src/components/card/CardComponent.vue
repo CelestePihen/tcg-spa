@@ -84,8 +84,13 @@ p {
   text-align: center;
 }
 
+.n-card {
+  width: 100%;
+}
+
 .size-sm {
-  width: 200px;
+  margin: 0 auto;
+  max-width: 200px;
 }
 
 .size-sm img {

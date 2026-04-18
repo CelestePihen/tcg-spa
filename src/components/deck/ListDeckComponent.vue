@@ -1,18 +1,20 @@
 <template>
-  <NFlex justify="space-between">
+  <NFlex justify="space-between" align="center" class="deck-list-header">
     <h1>Mes decks</h1>
     <NFlex align="center">
       <NButton type="primary" @click="handleNewDeck">+ Nouveau deck</NButton>
     </NFlex>
   </NFlex>
 
-  <DeckComponent
-    v-for="deck in myDecks"
-    :key="deck.id"
-    :all-cards="allCards"
-    :deck="deck"
-    @deck-deleted="handleDeckDeleted"
-  ></DeckComponent>
+  <NGrid responsive="screen" cols="1 2xl:2" :x-gap="12" :y-gap="12">
+    <NGi v-for="deck in myDecks" :key="deck.id">
+      <DeckComponent
+        :all-cards="allCards"
+        :deck="deck"
+        @deck-deleted="handleDeckDeleted"
+      ></DeckComponent>
+    </NGi>
+  </NGrid>
 </template>
 
 <script setup lang="ts">
@@ -68,4 +70,20 @@ onMounted(getAllCards)
 onMounted(getMyDecks)
 </script>
 
-<style scoped></style>
+<style scoped>
+.deck-list-header {
+  margin-bottom: 12px;
+}
+
+.deck-list-header h1 {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .deck-list-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+</style>

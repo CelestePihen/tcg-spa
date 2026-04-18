@@ -82,7 +82,13 @@ const activeCardAsCard = computed<Card | null>(() => {
   align-items: center;
   display: flex;
   justify-content: center;
-  min-height: 300px;
+  min-height: 220px;
   padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .zone-body {
+    min-height: 300px;
+  }
 }
 </style>

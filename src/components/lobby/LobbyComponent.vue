@@ -2,7 +2,7 @@
   <section class="play-section">
     <h2 class="play-title">Jouer</h2>
 
-    <NGrid cols="2" :x-gap="14" :y-gap="14">
+    <NGrid responsive="screen" cols="1 l:2" :x-gap="14" :y-gap="14">
       <NGi>
         <NCard title="Créer une partie" class="panel-card" size="small">
           <NSpin :show="isLoading">
@@ -185,5 +185,15 @@ onMounted(async () => {
 
 .room-id {
   font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .action-btn {
+    width: 100%;
+  }
+
+  .play-title {
+    font-size: 24px;
+  }
 }
 </style>

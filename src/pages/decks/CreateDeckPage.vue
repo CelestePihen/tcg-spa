@@ -1,46 +1,49 @@
 <template>
-  <NFlex align="center">
-    <RouterLink :to="ROUTES.HOME"><NButton>← Retour</NButton></RouterLink>
-    <h1>Créer un deck</h1>
-  </NFlex>
-
-  <NForm
-    ref="formRef"
-    :model="form"
-    :rules="rules"
-    @submit.prevent="handleCreateDeck"
-  >
-    <NFormItem label="Nom du deck" path="deckName">
-      <NInput v-model:value="form.deckName" placeholder="Mon super deck" />
-    </NFormItem>
-
-    <p :class="{ validate: selectedCardIds.size === 10 }">
-      {{ selectedCardIds.size }}/10 cartes sélectionnées
-    </p>
-
-    <NFlex vertical style="margin-bottom: 20px">
-      <NButton
-        attr-type="submit"
-        :disabled="selectedCardIds.size !== 10 || !form.deckName || isLoading"
-        type="primary"
-        >Créer le deck</NButton
-      >
+  <section class="deck-form-page">
+    <NFlex align="center" class="page-header">
+      <RouterLink :to="ROUTES.HOME"><NButton>← Retour</NButton></RouterLink>
+      <h1>Créer un deck</h1>
     </NFlex>
-  </NForm>
 
-  <!-- clearable sert à afficher une petite croix permettant d'effacer le contenu -->
-  <NInput
-    v-model:value="searchQuery"
-    clearable
-    placeholder="Rechercher une carte par nom"
-    style="margin-bottom: 12px"
-  />
+    <NForm
+      ref="formRef"
+      :model="form"
+      :rules="rules"
+      class="deck-form"
+      @submit.prevent="handleCreateDeck"
+    >
+      <NFormItem label="Nom du deck" path="deckName">
+        <NInput v-model:value="form.deckName" placeholder="Mon super deck" />
+      </NFormItem>
 
-  <ListCardComponent
-    :cards="filteredCards"
-    :selected-card-ids="selectedCardIds"
-    @update-selected-cards="handleSelectedCardsChange"
-  />
+      <p :class="{ validate: selectedCardIds.size === 10 }">
+        {{ selectedCardIds.size }}/10 cartes sélectionnées
+      </p>
+
+      <NFlex vertical style="margin-bottom: 20px">
+        <NButton
+          attr-type="submit"
+          :disabled="selectedCardIds.size !== 10 || !form.deckName || isLoading"
+          type="primary"
+          >Créer le deck</NButton
+        >
+      </NFlex>
+    </NForm>
+
+    <!-- clearable sert à afficher une petite croix permettant d'effacer le contenu -->
+    <NInput
+      v-model:value="searchQuery"
+      clearable
+      placeholder="Rechercher une carte par nom"
+      class="search-input"
+    />
+
+    <ListCardComponent
+      :cards="filteredCards"
+      :selected-card-ids="selectedCardIds"
+      @update-selected-cards="handleSelectedCardsChange"
+    />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -130,7 +133,35 @@ onMounted(fetchCards)
 </script>
 
 <style scoped>
+.deck-form-page {
+  width: 100%;
+}
+
+.page-header {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.page-header h1 {
+  margin: 0;
+}
+
+.deck-form {
+  width: 100%;
+}
+
+.search-input {
+  margin-bottom: 12px;
+}
+
 .validate {
   color: green;
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    align-items: flex-start;
+  }
 }
 </style>

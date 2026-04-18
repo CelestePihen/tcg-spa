@@ -125,10 +125,12 @@ function handleSignUp(e: MouseEvent) {
 
 <style scoped>
 .sign-up {
+  padding: 16px;
   min-height: 100vh;
 }
 
 .n-card {
+  width: 100%;
   max-width: 400px;
 }
 </style>

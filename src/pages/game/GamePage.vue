@@ -103,7 +103,13 @@ onMounted(() => {
 .game-panel {
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  max-height: calc(100vh - 100px);
+  max-height: none;
   overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .game-panel {
+    max-height: calc(100vh - 100px);
+  }
 }
 </style>

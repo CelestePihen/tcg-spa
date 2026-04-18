@@ -78,12 +78,18 @@ const toCardModel = (card: GameCard): Card => ({
 .hand-grid {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
 }
 
 .deck-count {
   color: #6b7280;
   font-size: 12px;
   margin: 8px 0 0;
+}
+
+@media (min-width: 1024px) {
+  .hand-grid {
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+  }
 }
 </style>

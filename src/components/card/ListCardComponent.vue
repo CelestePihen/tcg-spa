@@ -1,5 +1,5 @@
 <template>
-  <NGrid :x-gap="2" :y-gap="10" :cols="nbColumn">
+  <NGrid responsive="screen" :x-gap="8" :y-gap="10" :cols="responsiveCols">
     <NGi v-for="card in cards" :key="card.id">
       <CardComponent
         class="card"
@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import CardComponent from '@/components/card/CardComponent.vue'
 import type { Card } from '@/types'
 
@@ -27,6 +29,11 @@ const props = withDefaults(defineProps<ListCardProps>(), {
   selectedCardIds: () => new Set<number>(),
   selectionMode: true,
   nbColumn: 6,
+})
+
+const responsiveCols = computed(() => {
+  const desktopCols = Math.max(1, props.nbColumn)
+  return `2 s:2 m:3 l:${desktopCols} xl:${desktopCols} 2xl:${desktopCols}`
 })
 
 const emit =

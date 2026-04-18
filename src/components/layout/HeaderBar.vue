@@ -1,10 +1,7 @@
 <template>
-  <NLayoutHeader
-    bordered
-    style="padding: 0 24px; position: sticky; top: 0; z-index: 100"
-  >
-    <NSpace justify="space-between" align="center" style="height: 56px">
-      <NSpace align="center" :size="16">
+  <NLayoutHeader bordered class="header-bar">
+    <div class="header-row">
+      <NSpace align="center" :size="16" class="header-left">
         <RouterLink to="/">TCG SPA</RouterLink>
         <NButton
           tag="a"
@@ -25,11 +22,11 @@
           Maquettes
         </NButton>
       </NSpace>
-      <NSpace align="center" :size="16">
+      <NSpace align="center" :size="16" class="header-right">
         <NText depth="3">{{ user?.username ?? '' }}</NText>
         <NButton size="small" @click="handleSignOut">Déconnexion</NButton>
       </NSpace>
-    </NSpace>
+    </div>
   </NLayoutHeader>
 </template>
 
@@ -49,3 +46,37 @@ const handleSignOut = async () => {
   await signOut()
 }
 </script>
+
+<style scoped>
+/* fuck le CSS */
+.header-bar {
+  padding: 8px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  min-height: 40px;
+}
+
+.header-left,
+.header-right {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .header-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-right {
+    width: 100%;
+  }
+}
+</style>
