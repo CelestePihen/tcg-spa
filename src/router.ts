@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import CreateDeckPage from '@/pages/decks/CreateDeckPage.vue'
+import DetailDeckPage from '@/pages/decks/DetailDeckPage.vue'
+import UpdateDeckPage from '@/pages/decks/UpdateDeckPage.vue'
 import { useAuthStore } from '@/store/auth.store.ts'
 
+import SignInPage from './pages/auth/SignInPage.vue'
+import SignUpPage from './pages/auth/SignUpPage.vue'
+import GamePage from './pages/game/GamePage.vue'
 import HomePage from './pages/HomePage.vue'
-import SignInPage from './pages/SignInPage.vue'
-import SignUpPage from './pages/SignUpPage.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -14,16 +18,15 @@ declare module 'vue-router' {
 
 export const ROUTES = {
   HOME: '/',
+  GAME: '/game',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
+  CREATE_DECK: '/create-deck',
+  UPDATE_DECK: '/update-deck/:deckId',
+  DETAILS_DECK: '/details-deck/:deckId',
 } as const
 
 const routes = [
-  {
-    path: ROUTES.HOME,
-    component: HomePage,
-    meta: { requiresAuth: true },
-  },
   {
     path: ROUTES.SIGN_IN,
     component: SignInPage,
@@ -31,6 +34,31 @@ const routes = [
   {
     path: ROUTES.SIGN_UP,
     component: SignUpPage,
+  },
+  {
+    path: ROUTES.HOME,
+    component: HomePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.GAME,
+    component: GamePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.CREATE_DECK,
+    component: CreateDeckPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.UPDATE_DECK,
+    component: UpdateDeckPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.DETAILS_DECK,
+    component: DetailDeckPage,
+    meta: { requiresAuth: true },
   },
 ]
 
