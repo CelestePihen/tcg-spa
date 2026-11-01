@@ -98,9 +98,9 @@ function handleSignIn(e: MouseEvent) {
         await useAuthStore().signIn(user.value)
         await router.push(ROUTES.HOME)
         message.info('Vous êtes connecté(e)')
-      } catch (error) {
+      } catch (e) {
         isLoading.value = false
-        if (error instanceof Error) message.error(error.message)
+        if (e instanceof Error) message.error(e.message)
       }
     }
   })
@@ -109,10 +109,12 @@ function handleSignIn(e: MouseEvent) {
 
 <style scoped>
 .sign-in {
+  padding: 16px;
   min-height: 100vh;
 }
 
 .n-card {
+  width: 100%;
   max-width: 400px;
 }
 </style>

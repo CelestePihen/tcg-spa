@@ -24,6 +24,12 @@ const { isAuthenticated } = storeToRefs(authStore)
 
 <style>
 body {
-  padding: 0 20px;
+  padding: 0 12px;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 0 20px;
+  }
 }
 </style>
